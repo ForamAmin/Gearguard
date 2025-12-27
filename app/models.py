@@ -4,17 +4,17 @@ from datetime import datetime
 from database import Base
 import enum
 
-class Company(Base):
-    __tablename__ = "companies"
+# class Company(Base):
+#     __tablename__ = "companies"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    base_currency = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+#     id = Column(Integer, primary_key=True, index=True)
+#     name = Column(String, nullable=False)
+#     base_currency = Column(String, nullable=False)
+#     created_at = Column(DateTime, default=datetime.utcnow)
 
-    # Relationships
-    users = relationship("User", back_populates="company")
-    equipment = relationship("Equipment", back_populates="company")
+#     # Relationships
+#     users = relationship("User", back_populates="company")
+#     equipment = relationship("Equipment", back_populates="company")
 
 
 class UserRole(enum.Enum):
@@ -29,10 +29,11 @@ class User(Base):
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     role = Column(Enum(UserRole), nullable=False)
+    password_hash = Column(String, nullable=False)
 
-    company_id = Column(Integer, ForeignKey("companies.id"))
+    # company_id = Column(Integer, ForeignKey("companies.id"))
 
-    company = relationship("Company", back_populates="users")
+    # company = relationship("Company", back_populates="users")
 
     # Relationships
     assigned_requests = relationship("MaintenanceRequest", back_populates="technician")
@@ -67,10 +68,10 @@ class Equipment(Base):
     purchase_date = Column(DateTime)
     warranty_expiry = Column(DateTime)
 
-    company_id = Column(Integer, ForeignKey("companies.id"))
+    # company_id = Column(Integer, ForeignKey("companies.id"))
     maintenance_team_id = Column(Integer, ForeignKey("maintenance_teams.id"))
 
-    company = relationship("Company", back_populates="equipment")
+    # company = relationship("Company", back_populates="equipment")
     maintenance_team = relationship("MaintenanceTeam", back_populates="equipment")
 
     maintenance_requests = relationship("MaintenanceRequest", back_populates="equipment")
@@ -93,7 +94,7 @@ class MaintenanceRequest(Base):
 
     id = Column(Integer, primary_key=True)
     subject = Column(String, nullable=False)
-    description = Column(Text)
+    description = Column(Text, nullable=False)
 
     equipment_id = Column(Integer, ForeignKey("equipment.id"))
     created_by_id = Column(Integer, ForeignKey("users.id"))
