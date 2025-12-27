@@ -38,6 +38,8 @@ class User(Base):
     # Relationships
     assigned_requests = relationship("MaintenanceRequest", back_populates="technician")
     created_requests = relationship("MaintenanceRequest", back_populates="created_by")
+    teams = relationship("TeamMember", back_populates="user")
+
 
 class MaintenanceTeam(Base):
     __tablename__ = "maintenance_teams"
