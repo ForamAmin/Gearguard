@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from models import Equipment, MaintenanceTeam, TeamMember, User
 
 
-def autofill_maintenance_team(equipment_id: int, db: Session):
+def autofill_maintenance_team(db: Session,equipment_id: int):
     """
     Returns the maintenance team ID assigned to the given equipment.
     """

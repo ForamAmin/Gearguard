@@ -6,8 +6,10 @@ from models import (
     RequestType,
     UserRole
 )
-from autofill import autofill_technician_for_request
-
+from services.autofill import autofill_maintenance_team
+from models import User, UserRole 
+from security import hash_password
+from security import verify_password
 
 def create_maintenance_request(
     db,
@@ -18,27 +20,16 @@ def create_maintenance_request(
     description: str = None,
     scheduled_date=None
 ):
-    """
-    Employee creates a maintenance request.
-    """
-
-    # 1️⃣ Validate employee
     employee = db.query(User).filter(User.id == employee_id).first()
     if not employee or employee.role != UserRole.EMPLOYEE:
         raise Exception("Only employees can create maintenance requests")
 
-    # 2️⃣ Validate equipment
-    equipment = db.query(Equipment).filter(
-        Equipment.id == equipment_id
-    ).first()
-
+    equipment = db.query(Equipment).filter(Equipment.id == equipment_id).first()
     if not equipment:
-        raise Exception("Invalid equipment selected")
+        raise Exception("Invalid equipment")
 
-    # 3️⃣ Auto-fill technician
-    technician_id = autofill_technician_for_request(db, equipment_id)
+    technician_id = autofill_maintenance_team(db,equipment_id)
 
-    # 4️⃣ Create request
     new_request = MaintenanceRequest(
         subject=subject,
         description=description,
@@ -50,41 +41,24 @@ def create_maintenance_request(
         scheduled_date=scheduled_date
     )
 
-    # 5️⃣ Save to DB
     db.add(new_request)
     db.commit()
     db.refresh(new_request)
 
     return new_request
-from models import User, UserRole
-from security import hash_password
 
-def signup_user(
-    db,
-    name: str,
-    email: str,
-    password: str,
-    role: UserRole,
-    company_id: int
-):
-    """
-    Registers a new user.
-    """
 
-    # Check if email already exists
+def signup_user(db, name: str, email: str, password: str, role: UserRole):
     if db.query(User).filter(User.email == email).first():
         raise Exception("Email already registered")
 
-    # Hash password BEFORE storing
     hashed_password = hash_password(password)
 
-    # Create user
     user = User(
         name=name,
         email=email,
         password=hashed_password,
-        role=role,
-        company_id=company_id
+        role=role
     )
 
     db.add(user)
@@ -92,8 +66,7 @@ def signup_user(
     db.refresh(user)
 
     return user
-from models import User
-from security import verify_password
+
 
 def login_user(
     db,
