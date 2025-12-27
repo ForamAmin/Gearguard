@@ -1,0 +1,95 @@
+.signup-wrapper {
+  min-height: 100vh;
+  background: #f7f9fc;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header reused */
+.top-header {
+  padding: 1.2rem 3rem;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #2778c4;
+  margin: 0;
+}
+
+/* Signup card */
+.signup-container {
+  max-width: 450px;
+  margin: 4rem auto;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.signup-container h2 {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+/* Role buttons */
+.role-select {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.8rem;
+}
+
+.role-select button {
+  flex: 1;
+  margin: 0 0.3rem;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 2px solid #2778c4;
+  background: white;
+  color: #2778c4;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.role-select button.active {
+  background: #2778c4;
+  color: white;
+}
+
+/* Form */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.signup-form input {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.signup-form input:focus {
+  outline: none;
+  border-color: #2778c4;
+}
+
+/* Signup button */
+.signup-form button {
+  margin-top: 0.5rem;
+  padding: 0.8rem;
+  font-size: 1rem;
+  background: #2778c4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.signup-form button:hover {
+  background: #1f5f97;
+}

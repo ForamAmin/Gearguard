@@ -1,0 +1,84 @@
+/* Page background */
+.login-wrapper {
+  min-height: 100vh;
+  background: #f7f9fc;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header (same as Home) */
+.top-header {
+  padding: 1.2rem 3rem;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #2778c4;
+  margin: 0;
+}
+
+/* Login card */
+.login-container {
+  max-width: 400px;
+  margin: 5rem auto;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.login-container h2 {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.login-form input {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: #2778c4;
+}
+
+/* Button */
+.login-form button {
+  padding: 0.8rem;
+  font-size: 1rem;
+  background: #2778c4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background: #1f5f97;
+}
+
+/* Signup text */
+.signup-text {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.signup-text span {
+  color: #2778c4;
+  cursor: pointer;
+  font-weight: 500;
+}
