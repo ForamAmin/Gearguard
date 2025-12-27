@@ -83,3 +83,59 @@ def login_user(
         raise Exception("Invalid email or password")
 
     return user
+
+
+from sqlalchemy.orm import Session
+from models import User, MaintenanceRequest, UserRole, TeamMember
+
+
+def get_user_by_email(db: Session, email: str):
+    # 1. Get user by email
+    user = db.query(User).filter(User.email == email).first()
+
+    if not user:
+        raise Exception("User not found")
+
+    # 2. EMPLOYEE → only own requests
+    if user.role == UserRole.EMPLOYEE:
+        requests = db.query(MaintenanceRequest).filter(
+            MaintenanceRequest.created_by_id == user.id
+        ).all()
+
+    # 3. TECHNICIAN → assigned requests
+    elif user.role == UserRole.TECHNICIAN:
+        requests = db.query(MaintenanceRequest).filter(
+            MaintenanceRequest.assigned_technician_id == user.id
+        ).all()
+
+    # 4. MANAGER → requests of their team
+    elif user.role == UserRole.MANAGER:
+        # Get all team IDs for this manager
+        team_ids = (
+            db.query(TeamMember.team_id)
+            .filter(TeamMember.user_id == user.id)
+            .all()
+        )
+        team_ids = [t[0] for t in team_ids]
+
+        # Get all users in those teams
+        user_ids = (
+            db.query(User.id)
+            .join(TeamMember, TeamMember.user_id == User.id)
+            .filter(TeamMember.team_id.in_(team_ids))
+            .all()
+        )
+        user_ids = [u[0] for u in user_ids]
+
+        # Get requests created by those users
+        requests = db.query(MaintenanceRequest).filter(
+            MaintenanceRequest.created_by_id.in_(user_ids)
+        ).all()
+
+    else:
+        requests = []
+
+    return {
+        "user": user,
+        "requests": requests
+    }
