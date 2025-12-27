@@ -36,6 +36,12 @@ class User(Base):
     password = Column(String, nullable=False)
     role = Column(Enum(UserRole), nullable=False)
 
+    # 👇 THIS WAS MISSING
+    team_memberships = relationship(
+        "TeamMember",
+        back_populates="user"
+    )
+
     created_requests = relationship(
         "MaintenanceRequest",
         foreign_keys="MaintenanceRequest.created_by_id",
@@ -47,6 +53,7 @@ class User(Base):
         foreign_keys="MaintenanceRequest.assigned_technician_id",
         back_populates="technician"
     )
+
 
 
 
