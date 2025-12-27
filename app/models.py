@@ -33,12 +33,21 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
-    password_hash = Column(String, nullable=False)
+    password = Column(String, nullable=False)
     role = Column(Enum(UserRole), nullable=False)
 
-    created_requests = relationship("MaintenanceRequest", back_populates="created_by")
-    assigned_requests = relationship("MaintenanceRequest", back_populates="technician")
-    team_memberships = relationship("TeamMember", back_populates="user")
+    created_requests = relationship(
+        "MaintenanceRequest",
+        foreign_keys="MaintenanceRequest.created_by_id",
+        back_populates="created_by"
+    )
+
+    assigned_requests = relationship(
+        "MaintenanceRequest",
+        foreign_keys="MaintenanceRequest.assigned_technician_id",
+        back_populates="technician"
+    )
+
 
 
 class MaintenanceTeam(Base):
