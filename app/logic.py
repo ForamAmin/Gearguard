@@ -110,27 +110,12 @@ def get_user_by_email(db: Session, email: str):
 
     # 4. MANAGER → requests of their team
     elif user.role == UserRole.MANAGER:
-        # Get all team IDs for this manager
-        team_ids = (
-            db.query(TeamMember.team_id)
-            .filter(TeamMember.user_id == user.id)
+        requests = (
+            db.query(MaintenanceRequest)
+            .join(User, MaintenanceRequest.created_by_id == User.id)
+            .filter(User.company_id == user.company_id)
             .all()
         )
-        team_ids = [t[0] for t in team_ids]
-
-        # Get all users in those teams
-        user_ids = (
-            db.query(User.id)
-            .join(TeamMember, TeamMember.user_id == User.id)
-            .filter(TeamMember.team_id.in_(team_ids))
-            .all()
-        )
-        user_ids = [u[0] for u in user_ids]
-
-        # Get requests created by those users
-        requests = db.query(MaintenanceRequest).filter(
-            MaintenanceRequest.created_by_id.in_(user_ids)
-        ).all()
 
     else:
         requests = []
